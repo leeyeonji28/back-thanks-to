@@ -1,6 +1,8 @@
 package com.thanksto.backthanksto.config;
 
 import com.thanksto.backthanksto.config.jwt.JwtAuthenticationFilter;
+import com.thanksto.backthanksto.config.jwt.JwtAuthorizationFilter;
+import com.thanksto.backthanksto.dao.UserRepository;
 import com.thanksto.backthanksto.filter.SecurityFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -17,6 +19,7 @@ import org.springframework.security.web.context.SecurityContextHolderFilter;
 @EnableWebSecurity // 스프링 시큐리티 필터가 스프링 필터체인에 등록 됨
 @RequiredArgsConstructor
 public class SecurityConfig {
+    private final UserRepository userRepository;
 
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
@@ -45,7 +48,8 @@ public class SecurityConfig {
         public void configure(HttpSecurity http) throws Exception {
             AuthenticationManager authenticationManager = http.getSharedObject(AuthenticationManager.class);
             http
-                    .addFilter(new JwtAuthenticationFilter(authenticationManager));
+                    .addFilter(new JwtAuthenticationFilter(authenticationManager))
+                    .addFilter(new JwtAuthorizationFilter(authenticationManager, userRepository));
         }
     }
 }

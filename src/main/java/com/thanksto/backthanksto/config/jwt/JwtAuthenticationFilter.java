@@ -81,6 +81,6 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                         .sign(Algorithm.HMAC512(JwtProperties.SECRET));
 
         //super.successfulAuthentication(request, response, chain, authResult);
-        response.addHeader("Authorization", "Bearer "+jwtToken);
+        response.addHeader("Authorization", JwtProperties.TOKEN_PRETIX + jwtToken);
     }
 }
