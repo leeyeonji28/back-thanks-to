@@ -1,5 +1,7 @@
 package com.thanksto.backthanksto.config.jwt;
 
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.thanksto.backthanksto.config.auth.PrincipalDetails;
 import com.thanksto.backthanksto.domain.User;
@@ -15,6 +17,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Date;
 
 // 스프링 시큐리티에서 UsernamePasswordAuthenticationFilter가 있음
 // /login 요청해서 username, password를 전송하면 (post)
@@ -59,18 +62,25 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
             return authentication;
 
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
 
         //return super.attemptAuthentication(request, response);
-        return null;
     }
 
     // attemptAuthentication 실행 후 인증이 정상적으로 되었으면 successfulAuthentication 함수가 실행됨
-    // jwt 토큰을 만들어서 request 요청한 사용자에서 jwt토큰을 response
+    // jwt 토큰을 만들어서 request 요청한 사용자에서 jwt 토큰을 response
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
-        System.out.println("successfulAuthentication 실행 : 인증 완료");
-        super.successfulAuthentication(request, response, chain, authResult);
+        PrincipalDetails principalDetails = (PrincipalDetails) authResult.getPrincipal();
+        String jwtToken = JWT.create()
+                        .withSubject("login token")
+                        .withExpiresAt(new Date(System.currentTimeMillis() + JwtProperties.EXPIRATION_TIME)) // 현재 시간 + 지정시간 = 만료시간
+                        .withClaim("id", principalDetails.getUser().getId())
+                        .withClaim("username", principalDetails.getUser().getUsername())
+                        .sign(Algorithm.HMAC512(JwtProperties.SECRET));
+
+        //super.successfulAuthentication(request, response, chain, authResult);
+        response.addHeader("Authorization", "Bearer "+jwtToken);
     }
 }
