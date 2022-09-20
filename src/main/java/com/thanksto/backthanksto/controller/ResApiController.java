@@ -29,17 +29,19 @@ public class ResApiController {
     public String join(@RequestBody User user) {
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         user.setRoles("ROLE_USER");
+        user.setUserSay(user.getUserSay());
+        user.setProfileImg(user.getProfileImg());
         userRepository.save(user);
         return "회원가입 완료";
     }
 
-    // user, manaser, admin 접근 가능
+    // user, manager, admin 접근 가능
     @GetMapping("/api/v1/user")
     public String user(){
         return "user";
     }
 
-    // manaser, admin 접근 가능
+    // manager, admin 접근 가능
     @GetMapping("/api/v1/manager")
     public String manager(){
         return "manager";
