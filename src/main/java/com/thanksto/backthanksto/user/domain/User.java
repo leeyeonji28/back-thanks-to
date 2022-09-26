@@ -1,4 +1,4 @@
-package com.thanksto.backthanksto.domain;
+package com.thanksto.backthanksto.user.domain;
 
 import lombok.Data;
 
@@ -17,6 +17,9 @@ public class User {
     @Column(unique = true)
     private String username;
     private String password;
+
+    @Column(unique = true, length = 50)
+    private String nickName;
 
     @Column(length = 200)
     private String userSay;

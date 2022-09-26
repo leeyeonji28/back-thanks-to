@@ -1,10 +1,10 @@
-package com.thanksto.backthanksto.config.jwt;
+package com.thanksto.backthanksto.security.config.jwt;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.thanksto.backthanksto.config.auth.PrincipalDetails;
-import com.thanksto.backthanksto.domain.User;
+import com.thanksto.backthanksto.security.config.auth.PrincipalDetails;
+import com.thanksto.backthanksto.user.domain.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

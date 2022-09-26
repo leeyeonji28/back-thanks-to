@@ -1,4 +1,4 @@
-package com.thanksto.backthanksto.config.jwt;
+package com.thanksto.backthanksto.security.config.jwt;
 
 public interface JwtProperties {
     String SECRET = "MySecretKey1$1$1234";

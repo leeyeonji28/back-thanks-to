@@ -1,7 +1,7 @@
-package com.thanksto.backthanksto.config.auth;
+package com.thanksto.backthanksto.security.config.auth;
 
-import com.thanksto.backthanksto.dao.UserRepository;
-import com.thanksto.backthanksto.domain.User;
+import com.thanksto.backthanksto.user.dao.UserRepository;
+import com.thanksto.backthanksto.user.domain.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

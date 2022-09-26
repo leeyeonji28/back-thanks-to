@@ -1,4 +1,4 @@
-package com.thanksto.backthanksto.config;
+package com.thanksto.backthanksto.security.config;
 
 //@Configuration
 public class FilterConfig {

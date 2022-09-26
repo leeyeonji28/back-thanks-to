@@ -1,6 +1,6 @@
-package com.thanksto.backthanksto.config.auth;
+package com.thanksto.backthanksto.security.config.auth;
 
-import com.thanksto.backthanksto.domain.User;
+import com.thanksto.backthanksto.user.domain.User;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

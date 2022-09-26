@@ -1,16 +1,14 @@
-package com.thanksto.backthanksto.controller;
+package com.thanksto.backthanksto.user.controller;
 
-import com.thanksto.backthanksto.dao.UserRepository;
-import com.thanksto.backthanksto.domain.User;
+import com.thanksto.backthanksto.user.dao.UserRepository;
+import com.thanksto.backthanksto.user.domain.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
+//@CrossOrigin(origins = "http://localhost:3000")
 public class ResApiController {
     private final UserRepository userRepository;
     private final  BCryptPasswordEncoder bCryptPasswordEncoder;

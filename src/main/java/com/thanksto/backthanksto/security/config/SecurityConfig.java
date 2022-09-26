@@ -1,9 +1,9 @@
-package com.thanksto.backthanksto.config;
+package com.thanksto.backthanksto.security.config;
 
-import com.thanksto.backthanksto.config.jwt.JwtAuthenticationFilter;
-import com.thanksto.backthanksto.config.jwt.JwtAuthorizationFilter;
-import com.thanksto.backthanksto.dao.UserRepository;
-import com.thanksto.backthanksto.filter.SecurityFilter;
+import com.thanksto.backthanksto.security.config.jwt.JwtAuthenticationFilter;
+import com.thanksto.backthanksto.security.config.jwt.JwtAuthorizationFilter;
+import com.thanksto.backthanksto.user.dao.UserRepository;
+import com.thanksto.backthanksto.security.config.filter.SecurityFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

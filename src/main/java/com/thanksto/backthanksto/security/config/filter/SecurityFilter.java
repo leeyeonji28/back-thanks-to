@@ -1,4 +1,4 @@
-package com.thanksto.backthanksto.filter;
+package com.thanksto.backthanksto.security.config.filter;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
