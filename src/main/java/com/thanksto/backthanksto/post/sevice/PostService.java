@@ -2,6 +2,7 @@ package com.thanksto.backthanksto.post.sevice;
 
 import com.thanksto.backthanksto.post.DataNotFoundException;
 import com.thanksto.backthanksto.post.dao.PostRepository;
+import com.thanksto.backthanksto.post.domain.CreatePostDto;
 import com.thanksto.backthanksto.post.domain.Post;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -26,4 +27,12 @@ public class PostService {
             throw new DataNotFoundException("Post not found");
         }
     }
+
+    public Long create(CreatePostDto createPostDto) throws Exception{
+        Post newPost = Post.createPost(createPostDto);
+
+        postRepository.save(newPost);
+
+        return newPost.getPostId();
+     }
 }
