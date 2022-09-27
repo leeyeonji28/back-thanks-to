@@ -13,6 +13,7 @@ import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/api")
 public class PostController {
 
     private final PostService postService;
@@ -30,25 +31,30 @@ public class PostController {
     }
 
     // post 생성
-    @PostMapping("/post/create")
+//    @Value("${resource.path}")
+//    private String projectPath;
+
+    @PostMapping(value = "/post/create", consumes = {"multipart/form-data"})
     public String CreatePost(@RequestPart(value = "createPostDto")CreatePostDto createPostDto,
-                             @RequestPart(value = "imageSrc") MultipartFile imageSrc) throws Exception{
-        String fileName = imageSrc.getOriginalFilename(); // 원래 file 이름
+                             @RequestPart(value = "postImage") MultipartFile postImage) throws Exception{
+
+        String projectPath = System.getProperty("user.dir") + "/src/main/resources/static/images/"; // 저장 경로
+
+        String fileName = postImage.getOriginalFilename(); // 원래 file 이름
 
         UUID uuid = UUID.randomUUID(); // file 이름이 겹치지 않기 위해 uuid 사용
 
         String saveFileName = uuid + "_" + fileName; // uuid와 file 이름을 합쳐서 저장
 
-        String projectPath = System.getProperty("user.dir") + "\\src\\main\\resources\\static\\images"; // 저장 경로
+        String filePath = projectPath + File.separator + saveFileName;
 
-        File saveFile = new File(projectPath, saveFileName);
-        imageSrc.transferTo(saveFile);
+        postImage.transferTo(new File(filePath));
 
-        String fileUrl = "http://localhost:8092/" + saveFileName;
-
-        createPostDto.setPostImg(fileUrl);
-
-        this.postService.create(createPostDto);
+//        String fileUrl = "http://localhost:8092/" + saveFileName;
+//
+//        createPostDto.setPostImg(fileUrl);
+//
+//        this.postService.create(createPostDto);
 
         return "post created";
     }
