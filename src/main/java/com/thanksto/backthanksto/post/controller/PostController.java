@@ -34,9 +34,9 @@ public class PostController {
 //    @Value("${resource.path}")
 //    private String projectPath;
 
-    @PostMapping(value = "/post/create", consumes = {"multipart/form-data"})
+    @PostMapping(value = "/{id}/post/create", consumes = {"multipart/form-data"})
     public String CreatePost(@RequestPart(value = "createPostDto")CreatePostDto createPostDto,
-                             @RequestPart(value = "postImage") MultipartFile postImage) throws Exception{
+                             @RequestPart(value = "postImage") MultipartFile postImage, @PathVariable Long id) throws Exception{
 
         String projectPath = System.getProperty("user.dir") + "/src/main/resources/static/images/"; // 저장 경로
 
@@ -50,11 +50,11 @@ public class PostController {
 
         postImage.transferTo(new File(filePath));
 
-//        String fileUrl = "http://localhost:8092/" + saveFileName;
-//
-//        createPostDto.setPostImg(fileUrl);
-//
-//        this.postService.create(createPostDto);
+        String fileUrl = "http://localhost:8092/" + saveFileName;
+
+        createPostDto.setPostImg(fileUrl);
+
+        this.postService.create(createPostDto, id);
 
         return "post created";
     }

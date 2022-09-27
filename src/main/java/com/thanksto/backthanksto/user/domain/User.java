@@ -1,5 +1,6 @@
 package com.thanksto.backthanksto.user.domain;
 
+import com.thanksto.backthanksto.post.domain.Post;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -25,6 +26,11 @@ public class User {
     private String userSay;
 
     private String profileImg;
+
+    @Transient
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+    private List<Post> postList;
+
     private String roles;
     public List<String> getRoleList(){
         if (this.roles.length() > 0){
@@ -32,4 +38,6 @@ public class User {
         }
         return new ArrayList<>();
     }
+
+
 }

@@ -1,11 +1,14 @@
 package com.thanksto.backthanksto.post.domain;
 
+import com.thanksto.backthanksto.user.domain.User;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
+@NoArgsConstructor
 @Data
 @Entity
 public class Post {
@@ -23,25 +26,28 @@ public class Post {
 
     private LocalDateTime postDate;
 
-    private String filename;
-    private String filepath;
-
     private long postLike;
 
+    @ManyToOne()
+    @JoinColumn(name = "id")
+    private User user;
+
     @Builder
-    public Post(String postImg, String postTitle, String postContent){
+    public Post(String postImg, String postTitle, String postContent, User user){
         this.postImg = postImg;
         this.postTitle = postTitle;
         this.postContent = postContent;
         this.postDate = LocalDateTime.now();
         this.postLike = 0;
+        this.user = user;
     }
 
-    public static Post createPost(CreatePostDto createPostDto) {
+    public static Post createPost(CreatePostDto createPostDto, User user) {
         return Post.builder()
                 .postImg(createPostDto.getPostImg())
                 .postTitle(createPostDto.getPostTitle())
                 .postContent(createPostDto.getPostContent())
+                .user(user)
                 .build();
     }
 }
