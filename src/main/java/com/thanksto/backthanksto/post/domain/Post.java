@@ -6,7 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @NoArgsConstructor
 @Data
@@ -24,7 +24,7 @@ public class Post {
     @Column(columnDefinition = "TEXT")
     private String postContent;
 
-    private LocalDateTime postDate;
+    private LocalDate postDate;
 
     private long postLike;
 
@@ -37,7 +37,7 @@ public class Post {
         this.postImg = postImg;
         this.postTitle = postTitle;
         this.postContent = postContent;
-        this.postDate = LocalDateTime.now();
+        this.postDate = LocalDate.now();
         this.postLike = 0;
         this.user = user;
     }
