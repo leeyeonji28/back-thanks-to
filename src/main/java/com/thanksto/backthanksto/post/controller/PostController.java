@@ -9,6 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @RestController
@@ -26,8 +27,8 @@ public class PostController {
 
     // post 단건 조회
     @GetMapping("/post/detail/{postId}")
-    public Post getPostDetail(@PathVariable Long postId){
-        return this.postService.getPostDetail(postId);
+    public Optional<Post> getUserPostDetail(@PathVariable Long postId) {
+        return this.postService.getUserPostDetail(postId);
     }
 
     // post 생성
@@ -47,23 +48,25 @@ public class PostController {
         }
 
         String fileName = postImage.getOriginalFilename(); // 원래 file 이름
+        if (fileName != ""){
+            UUID uuid = UUID.randomUUID(); // file 이름이 겹치지 않기 위해 uuid 사용
 
-        UUID uuid = UUID.randomUUID(); // file 이름이 겹치지 않기 위해 uuid 사용
+            String saveFileName = uuid + "_" + fileName; // uuid와 file 이름을 합쳐서 저장
 
-        String saveFileName = uuid + "_" + fileName; // uuid와 file 이름을 합쳐서 저장
+            String filePath = projectPath + File.separator + saveFileName;
 
-        String filePath = projectPath + File.separator + saveFileName;
+            postImage.transferTo(new File(filePath));
 
-        postImage.transferTo(new File(filePath));
+            String fileUrl = "http://localhost:8092/" + saveFileName;
 
-        String fileUrl = "http://localhost:8092/" + saveFileName;
-//        String fileUrl = "/images/" + saveFileName;
-
-        createPostDto.setPostImg(fileUrl);
+            createPostDto.setPostImg(fileUrl);
+        } else {
+            createPostDto.setPostImg("");
+        }
 
         this.postService.create(createPostDto, id);
 
-        return fileUrl;
+        return "post created";
     }
 
 }

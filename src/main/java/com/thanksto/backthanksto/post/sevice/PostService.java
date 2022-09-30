@@ -41,4 +41,8 @@ public class PostService {
 
         return newPost.getPostId();
      }
+
+    public Optional<Post> getUserPostDetail(Long postId) {
+        return this.postRepository.findById(postId);
+    }
 }

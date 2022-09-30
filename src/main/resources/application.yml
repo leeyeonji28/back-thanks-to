@@ -1,6 +1,6 @@
-resource:
+#resource:
   #path: /Users/iyeonji/work/portfolio/thanks-to/back-thanks-to/src/main/resources/static/images
-  path: classpath:/static/
+  #path: classpath:/static/
 server:
   port: 8092
 spring:

@@ -28,6 +28,8 @@ public class Post {
 
     private long postLike;
 
+    private boolean postLock;
+
     @ManyToOne()
     @JoinColumn(name = "id")
     private User user;
@@ -39,6 +41,7 @@ public class Post {
         this.postContent = postContent;
         this.postDate = LocalDate.now();
         this.postLike = 0;
+        this.postLock = false;
         this.user = user;
     }
 
