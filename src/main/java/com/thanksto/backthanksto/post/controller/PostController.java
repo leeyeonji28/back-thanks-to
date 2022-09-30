@@ -31,14 +31,20 @@ public class PostController {
     }
 
     // post 생성
-//    @Value("${resource.path}")
-//    private String projectPath;
-
     @PostMapping(value = "/{id}/post/create", consumes = {"multipart/form-data"})
     public String CreatePost(@RequestPart(value = "createPostDto")CreatePostDto createPostDto,
                              @RequestPart(value = "postImage") MultipartFile postImage, @PathVariable Long id) throws Exception{
 
-        String projectPath = System.getProperty("user.dir") + "/src/main/resources/static/images/"; // 저장 경로
+        String projectPath = System.getProperty("user.dir") + "/src/main/resources/static/"; // 저장 경로
+
+
+        if (!new File(projectPath).exists()){
+            try{
+                new File(projectPath).mkdirs();
+            } catch (Exception e){
+                e.printStackTrace();
+            }
+        }
 
         String fileName = postImage.getOriginalFilename(); // 원래 file 이름
 
@@ -51,12 +57,13 @@ public class PostController {
         postImage.transferTo(new File(filePath));
 
         String fileUrl = "http://localhost:8092/" + saveFileName;
+//        String fileUrl = "/images/" + saveFileName;
 
         createPostDto.setPostImg(fileUrl);
 
         this.postService.create(createPostDto, id);
 
-        return "post created";
+        return fileUrl;
     }
 
 }

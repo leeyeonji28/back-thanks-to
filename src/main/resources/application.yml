@@ -1,13 +1,13 @@
 resource:
   #path: /Users/iyeonji/work/portfolio/thanks-to/back-thanks-to/src/main/resources/static/images
-  path: C:/work/portfolio/thanks-to/back-thanks-to/src/main/resources/static/images/
+  path: classpath:/static/
 server:
   port: 8092
 spring:
   servlet:
     multipart:
       enabled: true
-      location: ${java.io.tmpdir}
+      location: classpath:/static/ #${java.io.tmpdir}
       max-file-size: 20MB
       max-request-size: 100MB
   thymeleaf:
@@ -34,7 +34,8 @@ spring:
   web:
     resources:
       static-locations:
-        - file:///c:/work/portfolio/thanks-to/back-thanks-to/src/main/resources/static/images/
+        #- file:///Users/iyeonji/work/portfolio/thanks-to/back-thanks-to/src/main/resources/static
+        classpath:/static/
   logging:
     level:
       org:
