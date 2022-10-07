@@ -1,5 +1,6 @@
 package com.thanksto.backthanksto.post.domain;
 
+import com.thanksto.backthanksto.user.domain.User;
 import lombok.*;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
@@ -9,13 +10,13 @@ public class CreatePostDto {
     private String postImg;
     private String postTitle;
     private String postContent;
-    private Long id;
+    private User user;
 
     @Builder
-    public CreatePostDto(String postImg, String postTitle, String postContent, Long id){
+    public CreatePostDto(String postImg, String postTitle, String postContent, User user){
         this.postImg = postImg;
         this.postTitle = postTitle;
         this.postContent = postContent;
-        this.id = id;
+        this.user = user;
     }
 }

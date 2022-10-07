@@ -8,13 +8,14 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.time.LocalDate;
 
-@NoArgsConstructor
+
 @Data
 @Entity
+@NoArgsConstructor
 public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long postId;
+    private long id;
 
     private String postImg;
 
@@ -30,8 +31,8 @@ public class Post {
 
     private boolean postLock;
 
-    @ManyToOne()
-    @JoinColumn(name = "id")
+    @ManyToOne() // many = post, one = user
+    @JoinColumn(name = "userId") // db에 userid로 저장됨
     private User user;
 
     @Builder

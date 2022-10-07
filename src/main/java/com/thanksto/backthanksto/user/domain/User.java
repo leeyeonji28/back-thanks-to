@@ -1,5 +1,7 @@
 package com.thanksto.backthanksto.user.domain;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.thanksto.backthanksto.post.domain.Post;
 import lombok.Data;
 
@@ -10,6 +12,7 @@ import java.util.List;
 
 @Data
 @Entity
+@JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class)
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,7 +30,6 @@ public class User {
 
     private String profileImg;
 
-    @Transient
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<Post> postList;
 

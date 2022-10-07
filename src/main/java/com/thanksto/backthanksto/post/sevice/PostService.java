@@ -18,6 +18,7 @@ public class PostService {
     private final PostRepository postRepository;
     private final UserRepository userRepository;
 
+    // post 전체 조회
     public List<Post> getPostList() {
         return this.postRepository.findAll();
     }
@@ -39,7 +40,7 @@ public class PostService {
 
         postRepository.save(newPost);
 
-        return newPost.getPostId();
+        return newPost.getId();
      }
 
     public Optional<Post> getUserPostDetail(Long postId) {
