@@ -2,9 +2,12 @@ package com.thanksto.backthanksto.user.controller;
 
 import com.thanksto.backthanksto.user.dao.UserRepository;
 import com.thanksto.backthanksto.user.domain.User;
+import com.thanksto.backthanksto.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -12,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 public class ResApiController {
     private final UserRepository userRepository;
     private final  BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final UserService userService;
 
     @GetMapping("/home")
     public String home() {
@@ -31,6 +35,11 @@ public class ResApiController {
         user.setProfileImg(user.getProfileImg());
         userRepository.save(user);
         return "회원가입 완료";
+    }
+
+    @GetMapping("/user/{id}")
+    public Optional<User> getUser(@PathVariable Long id) {
+        return this.userService.getUserData(id);
     }
 
     // user, manager, admin 접근 가능
