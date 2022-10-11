@@ -27,7 +27,7 @@ public class ResApiController {
         return "token";
     }
 
-    @PostMapping("/join")
+    @PostMapping("/api/join")
     public String join(@RequestBody User user) {
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         user.setRoles("ROLE_USER");
@@ -37,7 +37,7 @@ public class ResApiController {
         return "회원가입 완료";
     }
 
-    @GetMapping("/user/{id}")
+    @GetMapping("/api/user/{id}")
     public Optional<User> getUser(@PathVariable Long id) {
         return this.userService.getUserData(id);
     }

@@ -48,7 +48,7 @@ public class PostController {
         }
 
         String fileName = postImage.getOriginalFilename(); // 원래 file 이름
-        if (fileName != ""){
+        if (fileName.equals(".")){
             UUID uuid = UUID.randomUUID(); // file 이름이 겹치지 않기 위해 uuid 사용
 
             String saveFileName = uuid + "_" + fileName; // uuid와 file 이름을 합쳐서 저장
