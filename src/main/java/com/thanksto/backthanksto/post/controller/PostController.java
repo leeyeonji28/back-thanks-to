@@ -69,4 +69,10 @@ public class PostController {
         return "post created";
     }
 
+    // post 삭제
+    @GetMapping("/post/delete/{postId}")
+    public String postDelete(@PathVariable Long postId) {
+        this.postService.postDelete(postId);
+        return postId + " delete";
+    }
 }

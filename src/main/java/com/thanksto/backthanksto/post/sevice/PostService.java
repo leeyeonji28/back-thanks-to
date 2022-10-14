@@ -46,4 +46,9 @@ public class PostService {
     public Optional<Post> getUserPostDetail(Long postId) {
         return this.postRepository.findById(postId);
     }
+
+    public void postDelete(Long postId) {
+        Post deletePost = postRepository.findById(postId).get();
+        this.postRepository.delete(deletePost);
+    }
 }
