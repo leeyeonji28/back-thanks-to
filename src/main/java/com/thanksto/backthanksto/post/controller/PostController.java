@@ -70,7 +70,7 @@ public class PostController {
     }
 
     // post 삭제
-    @GetMapping("/post/delete/{postId}")
+    @DeleteMapping("/post/delete/{postId}")
     public String postDelete(@PathVariable Long postId) {
         this.postService.postDelete(postId);
         return postId + " delete";
