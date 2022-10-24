@@ -34,7 +34,7 @@ public class PostController {
     // post 생성
     @PostMapping(value = "/{id}/post/create", consumes = {"multipart/form-data"})
     public String CreatePost(@RequestPart(value = "createPostDto")CreatePostDto createPostDto,
-                             @RequestPart(value = "postImage") MultipartFile postImage, @PathVariable Long id) throws Exception{
+                             @RequestPart(value = "postImage", required=false) MultipartFile postImage, @PathVariable Long id) throws Exception{
 
         String projectPath = System.getProperty("user.dir") + "/src/main/resources/static/"; // 저장 경로
 
@@ -48,7 +48,7 @@ public class PostController {
         }
 
         String fileName = postImage.getOriginalFilename(); // 원래 file 이름
-        if (!fileName.equals("_blob")){
+        if (!fileName.equals("blob")){
             UUID uuid = UUID.randomUUID(); // file 이름이 겹치지 않기 위해 uuid 사용
 
             String saveFileName = uuid + "_" + fileName; // uuid와 file 이름을 합쳐서 저장
