@@ -4,6 +4,7 @@ import com.thanksto.backthanksto.post.DataNotFoundException;
 import com.thanksto.backthanksto.post.dao.PostRepository;
 import com.thanksto.backthanksto.post.domain.CreatePostDto;
 import com.thanksto.backthanksto.post.domain.Post;
+import com.thanksto.backthanksto.post.domain.UpdatePostDto;
 import com.thanksto.backthanksto.user.dao.UserRepository;
 import com.thanksto.backthanksto.user.domain.User;
 import lombok.RequiredArgsConstructor;
@@ -50,5 +51,17 @@ public class PostService {
     public void postDelete(Long postId) {
         Post deletePost = postRepository.findById(postId).get();
         this.postRepository.delete(deletePost);
+    }
+
+    public Post postUpdate(UpdatePostDto updatePostDto, Long postId) {
+        Post updatePost = postRepository.findById(postId).get();
+
+        updatePost.setPostTitle(updatePostDto.getPostTitle());
+        updatePost.setPostContent(updatePostDto.getPostContent());
+        updatePost.setPostImg(updatePostDto.getPostImg());
+
+        postRepository.save(updatePost);
+
+        return updatePost;
     }
 }

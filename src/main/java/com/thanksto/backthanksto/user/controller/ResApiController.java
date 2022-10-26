@@ -31,11 +31,12 @@ public class ResApiController {
         return "token";
     }
 
+    // 회원가입
     @PostMapping(value = "/api/join", consumes = {"multipart/form-data"})
     public String join(@RequestPart(value = "user", required=false) User user,
                        @RequestPart(value = "profileImg") MultipartFile profileImg) throws IOException {
 
-        String profilePath = System.getProperty("user.dir") + "/src/main/resources/static/user/"; // 저장 경로
+        String profilePath = System.getProperty("user.dir") + "/src/main/resources/static/"; // 저장 경로
 
 
         if (!new File(profilePath).exists()){
@@ -47,15 +48,10 @@ public class ResApiController {
         }
 
         String profileName = profileImg.getOriginalFilename(); // 원래 file 이름
-
         UUID uuid = UUID.randomUUID(); // file 이름이 겹치지 않기 위해 uuid 사용
-
         String saveFileName = uuid + "_" + profileName; // uuid와 file 이름을 합쳐서 저장
-
         String filePath = profilePath + File.separator + saveFileName;
-
         profileImg.transferTo(new File(filePath));
-
         String fileUrl = "http://localhost:8092/" + saveFileName;
 
         user.setUsername(user.getUsername());
@@ -68,10 +64,28 @@ public class ResApiController {
         return "회원가입 완료";
     }
 
+    // 유저 조회
     @GetMapping("/api/user/{id}")
     public Optional<User> getUser(@PathVariable Long id) {
         return this.userService.getUserData(id);
     }
+
+    // 유저 수정
+//    @PostMapping(value = "/api/user/{id}/modify")
+//    public String modifyUser(updateUserDto updateUserDto, @PathVariable Long id){
+//        Optional<User> user = this.userService.getUserData(id); // 유저 불러오기
+//
+//        updateUserDto.setId(id);
+//        updateUserDto.setPassword(bCryptPasswordEncoder.encode(user.get().getPassword()));
+////        updateUserDto.setRoles("ROLE_USER");
+//        updateUserDto.setUsername(user.get().getUsername());
+//        updateUserDto.setNickName(user.get().getNickName());
+//        updateUserDto.setUserSay(user.get().getUserSay());
+//        updateUserDto.setProfileImg(user.get().getProfileImg());
+//        userRepository.save();
+//
+//        return "수정 완료";
+//    }
 
     // user, manager, admin 접근 가능
     @GetMapping("/api/v1/user")

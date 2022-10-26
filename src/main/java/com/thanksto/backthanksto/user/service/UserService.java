@@ -15,4 +15,17 @@ public class UserService {
     public Optional<User> getUserData(Long id) {
         return this.userRepository.findById(id);
     }
+
+//    public void modifyUser(Long id) {
+//        Optional<User> userModify = this.userRepository.findById(id);
+//        userModify.username = userModify.
+//
+////                user.setUsername(user.getUsername());
+////        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+////        user.setRoles("ROLE_USER");
+////        user.setNickName(user.getNickName());
+////        user.setUserSay(user.getUserSay());
+////        user.setProfileImg(fileUrl);
+//        this.userRepository.save(userModify);
+//    }
 }

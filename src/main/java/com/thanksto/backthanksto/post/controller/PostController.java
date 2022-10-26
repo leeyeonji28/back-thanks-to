@@ -2,6 +2,7 @@ package com.thanksto.backthanksto.post.controller;
 
 import com.thanksto.backthanksto.post.domain.CreatePostDto;
 import com.thanksto.backthanksto.post.domain.Post;
+import com.thanksto.backthanksto.post.domain.UpdatePostDto;
 import com.thanksto.backthanksto.post.sevice.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -74,5 +75,12 @@ public class PostController {
     public String postDelete(@PathVariable Long postId) {
         this.postService.postDelete(postId);
         return postId + " delete";
+    }
+
+    // post 수정
+    @PostMapping("/post/update/{postId}")
+    public String postUpdate(@RequestBody UpdatePostDto updatePostDto, @PathVariable Long postId){
+        this.postService.postUpdate(updatePostDto, postId);
+        return "post 수정 완료";
     }
 }
