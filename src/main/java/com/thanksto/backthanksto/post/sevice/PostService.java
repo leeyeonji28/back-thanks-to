@@ -64,4 +64,10 @@ public class PostService {
 
         return updatePost;
     }
+
+    public void setLike(Long postId) {
+        Post post = postRepository.findById(postId).get();
+        post.setPostLike(post.getPostLike() + 1);
+        this.postRepository.save(post);
+    }
 }

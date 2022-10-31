@@ -83,4 +83,12 @@ public class PostController {
         this.postService.postUpdate(updatePostDto, postId);
         return "post 수정 완료";
     }
+
+    // post 좋아요
+    @PostMapping("/post/like/{postId}")
+    public String postLike(@PathVariable Long postId){
+        this.postService.setLike(postId);
+        return "좋아요";
+    }
+
 }
