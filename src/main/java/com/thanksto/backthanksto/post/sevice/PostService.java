@@ -70,4 +70,9 @@ public class PostService {
         post.setPostLike(post.getPostLike() + 1);
         this.postRepository.save(post);
     }
+
+    public List<Post> getPostSearchList(String searchKeyword) {
+        List<Post> posts = postRepository.findByPostTitleContaining(searchKeyword);
+        return posts;
+    }
 }

@@ -91,4 +91,9 @@ public class PostController {
         return "좋아요";
     }
 
+    // post 검색
+    @GetMapping("/post/search")
+    public List<Post> postSearch(@RequestParam("keyword") String searchKeyword){
+        return this.postService.getPostSearchList(searchKeyword);
+    }
 }
