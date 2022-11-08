@@ -10,4 +10,5 @@ public class UpdatePostDto {
     private String postImg;
     private String postTitle;
     private String postContent;
+    private String postLock;
 }

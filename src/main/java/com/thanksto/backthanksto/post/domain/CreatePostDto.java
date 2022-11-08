@@ -10,13 +10,15 @@ public class CreatePostDto {
     private String postImg;
     private String postTitle;
     private String postContent;
+    private String postLock;
     private User user;
 
     @Builder
-    public CreatePostDto(String postImg, String postTitle, String postContent, User user){
+    public CreatePostDto(String postImg, String postTitle, String postContent, String postLock, User user){
         this.postImg = postImg;
         this.postTitle = postTitle;
         this.postContent = postContent;
+        this.postLock = postLock;
         this.user = user;
     }
 }

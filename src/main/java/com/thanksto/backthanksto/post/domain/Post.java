@@ -29,20 +29,21 @@ public class Post {
 
     private long postLike;
 
-    private boolean postLock;
+    @Column(length = 50)
+    private String postLock;
 
     @ManyToOne() // many = post, one = user
     @JoinColumn(name = "userId") // db에 userid로 저장됨
     private User user;
 
     @Builder
-    public Post(String postImg, String postTitle, String postContent, User user){
+    public Post(String postImg, String postTitle, String postContent, String postLock, User user){
         this.postImg = postImg;
         this.postTitle = postTitle;
         this.postContent = postContent;
         this.postDate = LocalDate.now();
         this.postLike = 0;
-        this.postLock = false;
+        this.postLock = postLock;
         this.user = user;
     }
 
@@ -51,6 +52,7 @@ public class Post {
                 .postImg(createPostDto.getPostImg())
                 .postTitle(createPostDto.getPostTitle())
                 .postContent(createPostDto.getPostContent())
+                .postLock(createPostDto.getPostLock())
                 .user(user)
                 .build();
     }

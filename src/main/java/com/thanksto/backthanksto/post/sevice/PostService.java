@@ -59,6 +59,7 @@ public class PostService {
         updatePost.setPostTitle(updatePostDto.getPostTitle());
         updatePost.setPostContent(updatePostDto.getPostContent());
         updatePost.setPostImg(updatePostDto.getPostImg());
+        updatePost.setPostLock(updatePostDto.getPostLock());
 
         postRepository.save(updatePost);
 
