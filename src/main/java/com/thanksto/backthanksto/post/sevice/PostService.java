@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -74,6 +75,6 @@ public class PostService {
 
     public List<Post> getPostSearchList(String searchKeyword) {
         List<Post> posts = postRepository.findByPostTitleContaining(searchKeyword);
-        return posts;
+        return posts.stream().filter(post -> post.getPostLock().equals("false")).collect(Collectors.toList());
     }
 }
