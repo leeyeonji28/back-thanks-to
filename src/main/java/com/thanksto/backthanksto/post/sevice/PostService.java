@@ -8,6 +8,7 @@ import com.thanksto.backthanksto.post.domain.UpdatePostDto;
 import com.thanksto.backthanksto.user.dao.UserRepository;
 import com.thanksto.backthanksto.user.domain.User;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,7 +23,7 @@ public class PostService {
 
     // post 전체 조회
     public List<Post> getPostList() {
-        return this.postRepository.findAll();
+        return this.postRepository.findAll(Sort.by(Sort.Direction.DESC, "id"));
     }
 
     public Post getPostDetail(Long postId) {
@@ -76,5 +77,9 @@ public class PostService {
     public List<Post> getPostSearchList(String searchKeyword) {
         List<Post> posts = postRepository.findByPostTitleContaining(searchKeyword);
         return posts.stream().filter(post -> post.getPostLock().equals("false")).collect(Collectors.toList());
+    }
+
+    public List<Post> getPostLikeList() {
+        return this.postRepository.findAll(Sort.by(Sort.Direction.DESC, "postLike"));
     }
 }

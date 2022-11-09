@@ -96,4 +96,9 @@ public class PostController {
     public List<Post> postSearch(@RequestParam("keyword") String searchKeyword){
         return this.postService.getPostSearchList(searchKeyword);
     }
+
+    @GetMapping("/post/list/all/like")
+    public List<Post> getPostLikeList() {
+        return this.postService.getPostLikeList();
+    }
 }
