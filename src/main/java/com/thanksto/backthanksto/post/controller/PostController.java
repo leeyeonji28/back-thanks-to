@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -97,8 +98,15 @@ public class PostController {
         return this.postService.getPostSearchList(searchKeyword);
     }
 
+    // hot list
     @GetMapping("/post/list/all/like")
     public List<Post> getPostLikeList() {
         return this.postService.getPostLikeList();
+    }
+
+    // aws test
+    @PostMapping("/awsUploadTest")
+    public void awsUploadTest(@RequestPart(value = "imageSrc") MultipartFile imageSrc) throws IOException {
+        postService.awsUploadTest(imageSrc);
     }
 }

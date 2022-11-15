@@ -1,5 +1,7 @@
 package com.thanksto.backthanksto.post.sevice;
 
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.thanksto.backthanksto.post.DataNotFoundException;
 import com.thanksto.backthanksto.post.dao.PostRepository;
 import com.thanksto.backthanksto.post.domain.CreatePostDto;
@@ -8,11 +10,15 @@ import com.thanksto.backthanksto.post.domain.UpdatePostDto;
 import com.thanksto.backthanksto.user.dao.UserRepository;
 import com.thanksto.backthanksto.user.domain.User;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -20,6 +26,10 @@ import java.util.stream.Collectors;
 public class PostService {
     private final PostRepository postRepository;
     private final UserRepository userRepository;
+
+    @Value("${cloud.aws.s3.bucket}")
+    private String bucket;
+    private final AmazonS3 amazonS3;
 
     // post 전체 조회
     public List<Post> getPostList() {
@@ -81,5 +91,14 @@ public class PostService {
 
     public List<Post> getPostLikeList() {
         return this.postRepository.findAll(Sort.by(Sort.Direction.DESC, "postLike"));
+    }
+
+    // aws test
+    public void awsUploadTest(MultipartFile imageSrc) throws IOException {
+        String s3FileName = String.valueOf(UUID.randomUUID());
+        ObjectMetadata objMeta = new ObjectMetadata();
+        objMeta.setContentLength(imageSrc.getInputStream().available());
+
+        amazonS3.putObject(bucket, s3FileName, imageSrc.getInputStream(), objMeta);
     }
 }

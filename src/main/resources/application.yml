@@ -1,6 +1,3 @@
-#resource:
-  #path: /Users/iyeonji/work/portfolio/thanks-to/back-thanks-to/src/main/resources/static/images
-  #path: classpath:/static/
 server:
   port: 8092
 spring:
@@ -25,7 +22,7 @@ spring:
     password: 123414
   jpa:
     hibernate:
-      ddl-auto: update #create , update
+      ddl-auto: create #create , update
     properties:
       hibernate:
         show_sql: true
@@ -34,12 +31,23 @@ spring:
   web:
     resources:
       static-locations:
-        #- file:///Users/iyeonji/work/portfolio/thanks-to/back-thanks-to/src/main/resources/static
         classpath:/static/
-  logging:
-    level:
-      org:
-        hibernate:
-          type:
-            descriptor:
-              sql: trace
+logging:
+  level:
+    org:
+      hibernate:
+        type:
+          descriptor:
+            sql: trace
+cloud:
+  aws:
+    credentials:
+      accessKey: AKIA22756UQPLBI6VWZ4
+      secretKey: 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
+    s3:
+      bucket: thanks-to-site
+      dir: /
+    region:
+      static: ap-northeast-2
+    stack:
+      auto: false
