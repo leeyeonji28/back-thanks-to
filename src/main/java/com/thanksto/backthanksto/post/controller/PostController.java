@@ -1,14 +1,16 @@
 package com.thanksto.backthanksto.post.controller;
 
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.thanksto.backthanksto.post.domain.CreatePostDto;
 import com.thanksto.backthanksto.post.domain.Post;
 import com.thanksto.backthanksto.post.domain.UpdatePostDto;
 import com.thanksto.backthanksto.post.sevice.PostService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
@@ -20,6 +22,10 @@ import java.util.UUID;
 public class PostController {
 
     private final PostService postService;
+
+    @Value("${cloud.aws.s3.bucket}")
+    private String bucket;
+    private final AmazonS3 amazonS3;
 
     // post 전체 조회
     @GetMapping("/post/list/all")
@@ -38,29 +44,30 @@ public class PostController {
     public String CreatePost(@RequestPart(value = "createPostDto")CreatePostDto createPostDto,
                              @RequestPart(value = "postImage", required=false) MultipartFile postImage, @PathVariable Long id) throws Exception{
 
-        String projectPath = System.getProperty("user.dir") + "/src/main/resources/static/"; // 저장 경로
-
-
-        if (!new File(projectPath).exists()){
-            try{
-                new File(projectPath).mkdirs();
-            } catch (Exception e){
-                e.printStackTrace();
-            }
-        }
-
+//        String projectPath = System.getProperty("user.dir") + "/src/main/resources/static/"; // 저장 경로
+//        if (!new File(projectPath).exists()){
+//            try{
+//                new File(projectPath).mkdirs();
+//            } catch (Exception e){
+//                e.printStackTrace();
+//            }
+//        }
         String fileName = postImage.getOriginalFilename(); // 원래 file 이름
+
         if (!fileName.equals("blob")){
-            UUID uuid = UUID.randomUUID(); // file 이름이 겹치지 않기 위해 uuid 사용
+            String s3FileName = String.valueOf(UUID.randomUUID()); // random uuid
+            ObjectMetadata objMeta = new ObjectMetadata(); // 버킷에 첨부해주는 역할
+            objMeta.setContentLength(postImage.getInputStream().available()); // 이렇게 넣어야 함
 
-            String saveFileName = uuid + "_" + fileName; // uuid와 file 이름을 합쳐서 저장
+            amazonS3.putObject(bucket, s3FileName, postImage.getInputStream(), objMeta);
 
-            String filePath = projectPath + File.separator + saveFileName;
+            String fileUrl = "https://thanks-to-site.s3.ap-northeast-2.amazonaws.com/" + s3FileName;
 
-            postImage.transferTo(new File(filePath));
-
-            String fileUrl = "http://localhost:8092/" + saveFileName;
-
+//            UUID uuid = UUID.randomUUID(); // file 이름이 겹치지 않기 위해 uuid 사용
+//            String saveFileName = uuid + "_" + fileName; // uuid와 file 이름을 합쳐서 저장
+//            String filePath = projectPath + File.separator + saveFileName;
+//            postImage.transferTo(new File(filePath));
+//            String fileUrl = "http://localhost:8092/" + saveFileName;
             createPostDto.setPostImg(fileUrl);
         } else {
             createPostDto.setPostImg("");

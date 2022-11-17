@@ -1,14 +1,16 @@
 package com.thanksto.backthanksto.user.controller;
 
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.thanksto.backthanksto.user.dao.UserRepository;
 import com.thanksto.backthanksto.user.domain.User;
 import com.thanksto.backthanksto.user.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.Optional;
 import java.util.UUID;
@@ -20,6 +22,10 @@ public class ResApiController {
     private final UserRepository userRepository;
     private final  BCryptPasswordEncoder bCryptPasswordEncoder;
     private final UserService userService;
+
+    @Value("${cloud.aws.s3.bucket}")
+    private String bucket;
+    private final AmazonS3 amazonS3;
 
     @GetMapping("/home")
     public String home() {
@@ -36,23 +42,31 @@ public class ResApiController {
     public String join(@RequestPart(value = "user", required=false) User user,
                        @RequestPart(value = "profileImg") MultipartFile profileImg) throws IOException {
 
-        String profilePath = System.getProperty("user.dir") + "/src/main/resources/static/"; // 저장 경로
+//        String profilePath = System.getProperty("user.dir") + "/src/main/resources/static/"; // 저장 경로
+//
+//
+//        if (!new File(profilePath).exists()){
+//            try{
+//                new File(profilePath).mkdirs();
+//            } catch (Exception e){
+//                e.printStackTrace();
+//            }
+//        }
 
+//        String profileName = profileImg.getOriginalFilename(); // 원래 file 이름
+//        UUID uuid = UUID.randomUUID(); // file 이름이 겹치지 않기 위해 uuid 사용
+//        String saveFileName = uuid + "_" + profileName; // uuid와 file 이름을 합쳐서 저장
+//        String filePath = profilePath + File.separator + saveFileName;
+//        profileImg.transferTo(new File(filePath));
+//        String fileUrl = "http://localhost:8092/" + saveFileName;
 
-        if (!new File(profilePath).exists()){
-            try{
-                new File(profilePath).mkdirs();
-            } catch (Exception e){
-                e.printStackTrace();
-            }
-        }
+        String s3FileName = String.valueOf(UUID.randomUUID()); // random uuid
+        ObjectMetadata objMeta = new ObjectMetadata(); // 버킷에 첨부해주는 역할
+        objMeta.setContentLength(profileImg.getInputStream().available()); // 이렇게 넣어야 함
 
-        String profileName = profileImg.getOriginalFilename(); // 원래 file 이름
-        UUID uuid = UUID.randomUUID(); // file 이름이 겹치지 않기 위해 uuid 사용
-        String saveFileName = uuid + "_" + profileName; // uuid와 file 이름을 합쳐서 저장
-        String filePath = profilePath + File.separator + saveFileName;
-        profileImg.transferTo(new File(filePath));
-        String fileUrl = "http://localhost:8092/" + saveFileName;
+        amazonS3.putObject(bucket, s3FileName, profileImg.getInputStream(), objMeta);
+
+        String fileUrl = "https://thanks-to-site.s3.ap-northeast-2.amazonaws.com/" + s3FileName;
 
         user.setUsername(user.getUsername());
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
